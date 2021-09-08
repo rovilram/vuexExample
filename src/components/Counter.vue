@@ -7,7 +7,7 @@
   h2 lastmutation: {{ lastMutation }}
   h2 square Getter: {{ $store.getters['counter/square'] }}
 
-  button(@click="increment", :disabled="isLoading") +1
+  button(@click="increment", :disabled="$store.state.counter.isLoading") +1
   button(@click="incrementBy(5)", :disabled="isLoading") +5
   button(@click="incrementByRandom", :disabled="isLoading") Random
 </template>
