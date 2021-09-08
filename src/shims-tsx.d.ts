@@ -11,6 +11,9 @@ declare global {
         }
     }
     type TStore = {
+        rootState?: string;
+    };
+    type TCounterStore = {
         counter: number;
         lastMutation: string;
         isLoading: boolean;

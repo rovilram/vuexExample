@@ -1,15 +1,15 @@
 <template lang="pug">
 .counter-container
   h1 Counter - Vuex
-  h2 Direct access: {{ $store.state.counter }}
+  h2 Direct access: {{ $store.state.counter.counter }}
   h2 Computed: {{ countComputed }}
   h2 mapstate: {{ counter }}
   h2 lastmutation: {{ lastMutation }}
-  h2 square Getter: {{ $store.getters.square }}
+  h2 square Getter: {{ $store.getters['counter/square'] }}
 
-  button(@click="increment", :disabled="$store.state.isLoading") +1
-  button(@click="incrementBy(5)", :disabled="$store.state.isLoading") +5
-  button(@click="incrementByRandom", :disabled="$store.state.isLoading") Random
+  button(@click="increment", :disabled="isLoading") +1
+  button(@click="incrementBy(5)", :disabled="isLoading") +5
+  button(@click="incrementByRandom", :disabled="isLoading") Random
 </template>
 
 <script lang="ts">
@@ -19,28 +19,32 @@ import { mapState, mapActions } from "vuex";
 
 @Component({
   computed: {
-    ...mapState(["counter", "lastMutation"]),
+    ...mapState("counter", {
+      counter: "counter",
+      lastMutation: "lastMutation",
+      isLoading: "isLoading",
+    }),
   },
 
   methods: {
-    ...mapActions({ randomInt: "incrementRandomInt" }),
+    ...mapActions("counter", { randomInt: "incrementRandomInt" }),
   },
 })
 export default class Counter extends Vue {
   get countComputed(): number {
-    return this.$store.state.counter;
+    return this.$store.state.counter.counter;
   }
 
   increment(): void {
-    this.$store.commit("increment");
+    this.$store.commit("counter/increment");
   }
 
   incrementBy(val: number): void {
-    this.$store.commit("incrementBy", val);
+    this.$store.commit("counter/incrementBy", val);
   }
 
   incrementByRandom(): void {
-    this.$store.dispatch("incrementRandomInt");
+    this.$store.dispatch("counter/incrementRandomInt");
   }
 }
 </script>
